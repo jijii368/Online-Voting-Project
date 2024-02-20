@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="/assets/img/v.jpg" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+
+    <!-- =======================================================
+    * Template Name: Serenity
+    * Updated: Sep 18 2023 with Bootstrap v5.3.2
+    * Template URL: https://bootstrapmade.com/serenity-bootstrap-corporate-template/
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+    <title th:text="${title}">Title</title>
+</head>
+<body>
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+            <h1 class="text-light"><a th:href="@{/home}">Voting</a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="home.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="active" th:href="@{/home}">Home</a></li>
+                <li th:if="${user}"><a th:href="@{/user/user-profile}">User Profile</a></li>
+                <li th:if="${admin}"><a th:href="@{/admin/admin-profile}">Admin Profile</a></li>
+                <li><a th:href="@{/topic}">Topics</a></li>
+                <li><a th:href="@{/pointCharges/view}">Point Charges</a></li>
+                <li th:if="${admin}"><a th:href="@{/admin/payment/view}">Payment</a></li>
+
+                <li th:if="${sign}"><a class="getstarted" th:href="@{/sign-out}">Sign Out</a></li>
+                <li th:unless="${sign}"><a class="getstarted" th:href="@{/sign-in}">Sign In</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+
+    </div>
+</header>
+
+<section id="cta" class="cta">
+    <div class="container"></div>
+</section>
+<section id="service" class="services ">
+    <div class="container"></div>
+</section>
+
+<section id="about" class="about">
+    <div class="container">
+        <h4 style="text-align: center;color: #0b5ed7" id="demo" th:if="${message}" th:text="${message}" th:class="${'alert' + alertClass}"  ></h4>
+        <div class="row">
+            <div class="col-lg-6 video-box align-self-baseline position-relative">
+                <div class="member" data-aos="fade-up">
+                    <div class="member-img">
+                        <img src="/assets/img/team/anya.jpg" class="img-fluid" alt style="width: 200px;height: 200px">
+                    </div>
+                    <div class="member-info">
+                        <h3 th:text="${adminProfile.getName()}"></h3><br>
+                        <h5 th:text="'Join Date : '+${createdDate}"></h5>
+                        <h5 th:text="'Edit Date : '+${updatedDate}"></h5>
+                        <br>
+                        <a class="btn btn-primary" th:href="@{/admin/edit}">Edit</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 pt-3 pt-lg-0 content">
+                <div th:if="${pointRequestMessage}" th:text="${pointRequestMessage}" th:class="${'alert ' + alertClass}"/>
+                <div th:if="${cantDeleteWithoutAccept}" th:text="${cantDeleteWithoutAccept}" th:class="${'alert ' + alertClass}"/>
+                <div th:if="${accepted}" th:text="${accepted}" th:class="${'alert ' + alertClass}"/>
+                <div th:each="allRequestPoint, no : ${allRequestPoints}" class="col-lg-6 col-md-6">
+                    <div class="box featured" data-aos="fade-up" data-aos-delay="100">
+                        <h3 th:text="${'Point Request No.'+ (no.index+1)}"></h3>
+                        <ul>
+                            <li th:text="${'User : '+ allRequestPoint.user.getName()}"></li>
+                            <li th:text="${'Payment : '+allRequestPoint.payment.getName()}"></li>
+                            <li th:text="${'Amount : '+allRequestPoint.pointCharges.getAmount()+' ks'}"></li>
+                            <li th:text="${'Point : '+allRequestPoint.pointCharges.getPoint()+' points'}"></li>
+                            <li th:unless="${allRequestPoint.hasConfirmed}"><a th:href="@{/admin/pointRequest/accept(id=${allRequestPoint.id})}">Accept</a></li>
+                            <li th:if="${allRequestPoint.hasConfirmed}"><a style="color: red" th:href="@{/admin/pointRequest/delete(id=${allRequestPoint.id})}">Delete</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function removeData() {
+                var element = document.getElementById("demo");
+                element.innerHTML = "";
+            }
+
+            setTimeout(removeData, 5000);
+
+        </script>
+
+    </div>
+</section>
+
+
+<footer id="footer">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-3 col-md-6 footer-info">
+                    <h3>Voting</h3>
+                </div>
+                <div class="col-lg-3 col-md-6 footer-links">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a th:href="@{/home}">Home</a></li>
+                        <li><a th:href="@{/topic}">Topics</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-contact">
+                    <h4>Contact Us</h4>
+                    <p>No.169, MTP Condo, 2 floor (A&B), Insein Road,Near Than Lane Bus Stop, <br>
+                        Hlaing Township, Yangon, Myanmar<br>
+                        ACE Inspiration<br>
+                        <strong>Phone-</strong>09795519692<br>
+                        <strong>Email-</strong>info@aceinspiration.com<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</footer><!-- End Footer -->
+
+
+<!-- Vendor JS Files -->
+<script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="/assets/vendor/aos/aos.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/assets/vendor/waypoints/noframework.waypoints.js"></script>
+<script src="/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script type="text/javascript" src="/assets/js/main.js"></script>
+</body>
+</html>

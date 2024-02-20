@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <style>
+        body {
+            background-image: url('/assets/img/portfolio/portfolio-8.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center center;
+        }
+    </style>
+
+    <!-- Favicons -->
+    <link href="/assets/img/v.jpg" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+    <!-- =======================================================
+    * Template Name: Serenity
+    * Updated: Sep 18 2023 with Bootstrap v5.3.2
+    * Template URL: https://bootstrapmade.com/serenity-bootstrap-corporate-template/
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+    <title th:text="${title}">Title</title>
+</head>
+<body>
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+            <h1 class="text-light"><a th:href="@{/home}">Voting</a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="home.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="active" th:href="@{/home}">Home</a></li>
+                <li th:if="${user}"><a th:href="@{/user/user-profile}">User Profile</a></li>
+                <li th:if="${admin}"><a th:href="@{/admin/admin-profile}">Admin Profile</a></li>
+                <li><a th:href="@{/topic}">Topics</a></li>
+                <li><a th:href="@{/pointCharges/view}">Point Charges</a></li>
+                <li th:if="${admin}"><a th:href="@{/admin/payment/view}">Payment</a></li>
+
+                <li th:if="${sign}"><a class="getstarted" th:href="@{/sign-out}">Sign Out</a></li>
+                <li th:unless="${sign}"><a class="getstarted" th:href="@{/sign-in}">Sign In</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+    </div>
+</header>
+
+<section id="cta" >
+    <div class="container"></div>
+</section>
+
+<div data-aos="fade-right">
+    <form action="#" th:action="@{/admin/edit}" th:object="${adminEdit}" method="post">
+        <h2 class="col-md-5 offset-md-5 mb-4 mt-5" style="font-size:35px">Edit your Profile</h2>
+        <section id="price" class="pricing">
+            <div class="row mb-4">
+                <div class="col-md-4"></div>
+             <label class="col-md-1 col-form-label">Name</label>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" placeholder="Name" th:field="*{name}">
+                    <span style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-4"></div>
+             <label class="col-md-1 col-form-label">Password</label>
+                <div class="col-md-3">
+                    <input type="password" class="form-control" placeholder="Password" th:field="*{password}">
+                    <span style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-5"></div>
+                <div class="col-md-6">
+
+                    <!--                <div class="btn-wrap">-->
+                    <!--                    <a type="submit" class="btn-buy">Add</a>-->
+                    <!--                </div>-->
+
+                    <button type="submit" class="btn btn-primary col-md-2">Update</button>
+                    <!--                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"-->
+                    <!--                     aria-hidden="true">-->
+                    <!--                    <div class="modal-dialog modal-dialog-centered">-->
+                    <!--                        <div class="modal-content">-->
+                    <!--                            <div class="modal-header">-->
+                    <!--                                <h5 class="modal-title" id="exampleModalLabel">User Registration</h5>-->
+                    <!--                                <button type="button" class="btn-close" data-bs-dismiss="modal"-->
+                    <!--                                        aria-label="Close"></button>-->
+                    <!--                            </div>-->
+                    <!--                            <div class="modal-body">-->
+                    <!--                                <h5 style="color: rgb(127, 209, 131);">Registered Successfully!</h5>-->
+                    <!--                            </div>-->
+                    <!--                            <div class="modal-footer">-->
+                    <!--                                <button type="button" class="btn btn-success col-md-2" data-bs-dismiss="modal">Ok</button>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                </div>-->
+
+                </div>
+            </div>
+        </section>
+    </form>
+</div>
+
+<section id="services" class="services ">
+    <div class="container"></div>
+</section>
+
+
+
+<footer id="footer">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-3 col-md-6 footer-info">
+                    <h3>Voting</h3>
+                </div>
+                <div class="col-lg-3 col-md-6 footer-links">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a th:href="@{/home}">Home</a></li>
+                        <li><a th:href="@{/topic}">Topics</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-contact">
+                    <h4>Contact Us</h4>
+                    <p>No.169, MTP Condo, 2 floor (A&B), Insein Road,Near Than Lane Bus Stop, <br>
+                        Hlaing Township, Yangon, Myanmar<br>
+                        ACE Inspiration<br>
+                        <strong>Phone-</strong>09795519692<br>
+                        <strong>Email-</strong>info@aceinspiration.com<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</footer><!-- End Footer -->
+
+<!-- Vendor JS Files -->
+<script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="/assets/vendor/aos/aos.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/assets/vendor/waypoints/noframework.waypoints.js"></script>
+<script src="/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script type="text/javascript" src="/assets/js/main.js"></script>
+</body>
+</html>

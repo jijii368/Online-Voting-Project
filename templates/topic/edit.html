@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <style>
+        body {
+            background-image: url('/assets/img/portfolio/portfolio-8.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center center;
+
+        }
+        .col-form-label {
+            color: black;
+        }
+    </style>
+
+    <!-- Favicons -->
+    <link href="/assets/img/portfolio/portfolio-8.jpg" rel="portfolio-8">
+    <link href="/assets/img/v.jpg" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+    <!-- =======================================================
+    * Template Name: Serenity
+    * Updated: Sep 18 2023 with Bootstrap v5.3.2
+    * Template URL: https://bootstrapmade.com/serenity-bootstrap-corporate-template/
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+
+
+-->
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+            <h1 class="text-light"><a th:href="@{/home}">Voting</a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="active" th:href="@{/home}">Home</a></li>
+                <li th:if="${user}"><a th:href="@{/user/user-profile}">User Profile</a></li>
+                <li th:if="${admin}"><a th:href="@{/admin/admin-profile}">Admin Profile</a></li>
+                <li><a th:href="@{/topic}">Topics</a></li>
+                <li><a th:href="@{/pointCharges/view}">Point Charges</a></li>
+                <li th:if="${admin}"><a th:href="@{/admin/payment/view}">Payment</a></li>
+
+                <li th:if="${sign}"><a class="getstarted" th:href="@{/sign-out}">Sign Out</a></li>
+                <li th:unless="${sign}"><a class="getstarted" th:href="@{/sign-in}">Sign In</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+
+
+    </div>
+</header><!-- End Header -->
+
+<main id="main">
+
+
+    <!-- ======= Team Section ======= -->
+    <div class="container">
+        <div class="features .card-container" data-aos="fade-up">
+        <div class="breadcrumb-hero">
+            <h1 style="text-align: center">Topic Edition</h1>
+        </div>
+    </div>
+    <br><br>
+    <div class="container">
+            <h3 style="text-align: center"><img th:src="'data:image/;base64,'+ ${topic.image}" width="100" height="100"></h3><br>
+            <form action="#" th:action="@{/admin/topic/{id}(id=${topic.id})}" th:object="${topic}" method="post" enctype="multipart/form-data" onsubmit="return validateDates()">
+
+                <!-- @{/contestant/{id}(id=${contestant.id})}-->
+                <div class="row mb-4">
+                    <div class="col-md-2"></div>
+                    <label for="name" class="col-md-2 col-form-label">Topic Name</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="name" th:field="*{name}"  placeholder="Enter Topic Name">
+                        <!--   <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="form-text text-danger"></small>-->
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-2"></div>
+                    <label for="description" class="col-md-2 col-form-label" >Description</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="description" th:field="*{description}"  placeholder="Enter Description">
+                        <!-- <small th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="form-text text-danger"></small>-->
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-2"></div>
+                    <label for="image" class="col-md-2 col-form-label">Upload Your Image</label>
+                    <div class="col-md-4">
+                        <input type="file" class="form-control" id="image" accept="image/**"  name="file" >
+                        <span style="color: red" th:if="${#fields.hasErrors('image')}" ></span>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-2"></div>
+                    <label for="point_per_vote" class="col-md-2 col-form-label">Point Per Vote</label>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control" id="point_per_vote" th:field="*{pointPerVote}"  min="0" >
+                        <!-- <small th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="form-text text-danger"></small>-->
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-2"></div>
+                <div class="row-cols-md-6 offset-md-2 mb-7 mt-5">
+
+                    <button type="submit"  style="margin-top: -60px;" class="btn btn-primary mb-3">Update</button>
+
+
+                </div>
+
+                </div>
+
+            </form>
+
+    <!-- End Team Section -->
+    </div>
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 footer-info">
+                    <h3>Voting</h3>
+                </div>
+                <div class="col-lg-3 col-md-6 footer-links">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a th:href="@{/home}">Home</a></li>
+                        <li><a th:href="@{/topic}">Topics</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-contact">
+                    <h4>Contact Us</h4>
+                    <p>No.169, MTP Condo, 2 floor (A&B), Insein Road,Near Than Lane Bus Stop, <br>
+                        Hlaing Township, Yangon, Myanmar<br>
+                        ACE Inspiration<br>
+                        <strong>Phone-</strong>09795519692<br>
+                        <strong>Email-</strong>info@aceinspiration.com<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</footer><!-- End Footer -->
+
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="/assets/vendor/aos/aos.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/assets/vendor/waypoints/noframework.waypoints.js"></script>
+<script src="/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/assets/js/main.js"></script>
+
+</body>
+
+</html>

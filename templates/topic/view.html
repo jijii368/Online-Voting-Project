@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/" >
+<head>
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/v.jpg" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+
+    <!-- =======================================================
+    * Template Name: Serenity
+    * Updated: Sep 18 2023 with Bootstrap v5.3.2
+    * Template URL: https://bootstrapmade.com/serenity-bootstrap-corporate-template/
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+    <title th:text="${title}">Title</title>
+</head>
+<style>
+    .modal-backdrop{
+        --bs-backdrop-zindex:0;
+    }
+    /*.container::-webkit-scrollbar{
+        display: none;
+        width: 0px;
+        background: transparent;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        overflow-y: auto;
+    }*/
+</style>
+<body>
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+            <h1 class="text-light"><a th:href="@{/home}">Voting</a></h1>
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="active" th:href="@{/home}">Home</a></li>
+                <li th:if="${user}"><a th:href="@{/user/user-profile}">User Profile</a></li>
+                <li th:if="${admin}"><a th:href="@{/admin/admin-profile}">Admin Profile</a></li>
+                <li><a th:href="@{/topic}">Topics</a></li>
+                <li><a th:href="@{/pointCharges/view}">Point Charges</a></li>
+                <li th:if="${admin}"><a th:href="@{/admin/payment/view}">Payment</a></li>
+
+                <li th:if="${sign}"><a class="getstarted" th:href="@{/sign-out}">Sign Out</a></li>
+                <li th:unless="${sign}"><a class="getstarted" th:href="@{/sign-in}">Sign In</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+    </div>
+</header>
+
+<main id="main">
+
+    <div class="container">
+        <div class="features .card-container" data-aos="fade-up">
+        <div class="breadcrumb-hero">
+            <h1 style="text-align: center">Topic Titles</h1>
+        </div>
+    </div>
+    </div>
+    <br><br>
+
+        <div class="container">
+            <h4 style="text-align: center;color: #0b5ed7" id="demo" th:if="${message}" th:text="${message}" th:class="${'alert' + alertClass}"  ></h4>
+
+            <form class="row g-3 mt-3 ms-2" th:action="@{/topic/search}" th:value="${name}" method="post" >
+
+                <p th:if="${error != null}" th:text="${error}" style="color: red">Error message</p>
+
+                <div class="col-auto">
+                    <label for="id" class="visually-hidden">Topic Id</label>
+
+                    <input type="number" class="form-control1" id="id" name="id" placeholder="Topic Id" min="0">
+
+                </div>
+
+                <div class="col-auto">
+                    <label for="name" class="visually-hidden">Topic  Name</label>
+
+                    <input type="text" class="form-control1" id="name" name="name" placeholder="Topic Name">
+
+                </div>
+
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3">Search</button>
+
+                </div>
+
+                <div class="col-auto">
+                    <button type="reset" class="btn btn-danger mb-3"
+                            onclick="location.href=''">Reset</button>
+                </div>
+
+                <div class="col-auto">
+                    <a type="button" th:if="${admin}" th:href="@{/admin/topic/create}" class="btn btn-success">Add Topic</a>
+                </div>
+            <!--<div class="container" style="overflow: auto; height: 250px">-->
+            <table class="table" >
+                <thead class="table-info table-bordered">
+                <tr style="top: 0; position: sticky;z-index: 1">
+                    <th scope="col">No</th>
+                    <th class="text-center" scope="col">Image</th>
+                    <th   scope="col"><a  type="button" th:href="@{/topics/sort(field=${'name'})}" style="color: #1a1d20">Name</a></th>
+                    <th  scope="col">Description</th>
+                    <th class="text-center" scope="col" >Point Per Vote </th>
+                    <th class="text-center" scope="col">Start Date</th>
+                    <th  class="text-center" scope="col">End Date</th>
+                    <!--<th scope="col" th:if="${admin}">Created Date</th>-->
+                    <th  class="text-center" scope="col" th:if="${admin}"><a  type="button" th:href="@{/topics/sort(field=${'createdAt'})}" style="color: #1a1d20">Created Date</a></th>
+                    <th scope="col" th:if="${admin}">Updated Date</th>
+                    <th  class="text-center" scope="col"  >View Contestants</th>
+                    <th class="text-center" scope="col" th:if="${admin}">Edit</th>
+                    <th class="text-center" scope="col" th:if="${admin}">Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="topic, itetstart : ${topics}">
+                    <td th:text="${itetstart.index+1}"></td>
+                    <td class="text-center"> <img th:src="'data:image/**;base64,' + ${topic.image}" height="100px" width="100px" /> </td>
+                    <td  th:text="${topic.name}"></td>
+                    <td  th:text="${topic.description}"></td>
+                    <td class="text-center" th:text="${topic.pointPerVote}"></td>
+                    <td class="text-center" th:text="${#temporals.format(topic.fromDate, 'dd/MM/yyyy ')}"></td>
+                    <td class="text-center" th:text="${#temporals.format(topic.toDate, 'dd/MM/yyyy ')}"></td>
+                    <td  th:if="${admin}" th:text="${topic.createdAt.toString().substring(0,19)}"></td>
+                    <td  th:if="${admin}" th:text="${topic.updatedAt.toString().substring(0,19)}"></td>
+                    <td  class="text-center"><a  type="button" th:href="@{/contestant/view/{id}(id=${topic.id})}" class="btn btn-success mb-3">View Contestants</a></td>
+                    <td  class="text-center"><a th:if="${admin}" th:href="@{/admin/topic/edit/{id}(id=${topic.id})}" class=" btn btn-primary mb-3">Edit</a></td>
+                    <td   class="text-center"><button th:if="${admin}" th:id="${topic.id}" type="button"  class="btn btn-danger mb-3 delete-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="topicId()">Delete</button></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Topic Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h5 style="color: rgb(127, 209, 131);">Are you sure want  to delete !</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success col-md-2" data-bs-dismiss="modal" id="delete-modal-btn">Ok</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        <script>
+            var topicId;
+            document.querySelectorAll(".delete-btn").forEach(element => {
+                element.onclick = (e) => {
+                    topicId = element.id;
+                }
+            })
+            document.getElementById("delete-modal-btn").onclick = (e) => {
+
+                window.location.href = "/admin/topic/delete/" + topicId;
+            }
+        </script>
+
+
+        <script>
+            function removeData() {
+                var element = document.getElementById("demo");
+                element.innerHTML = "";
+            }
+
+            setTimeout(removeData, 5000);
+
+        </script>
+            </form>
+        </div>
+    <!--</section>-->
+</main>
+
+<footer id="footer" >
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-3 col-md-6 footer-info">
+                    <h3>Voting</h3>
+                </div>
+                <div class="col-lg-3 col-md-6 footer-links">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a th:href="@{/home}">Home</a></li>
+                        <li><a th:href="@{/topic}">Topics</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-contact">
+                    <h4>Contact Us</h4>
+                    <p>No.169, MTP Condo, 2 floor (A&B), Insein Road,Near Than Lane Bus Stop, <br>
+                        Hlaing Township, Yangon, Myanmar<br>
+                        ACE Inspiration<br>
+                        <strong>Phone-</strong>09795519692<br>
+                        <strong>Email-</strong>info@aceinspiration.com<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</footer><!-- End Footer -->
+
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="/assets/vendor/aos/aos.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/assets/vendor/waypoints/noframework.waypoints.js"></script>
+<script src="/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script type="text/javascript" src="/assets/js/main.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
